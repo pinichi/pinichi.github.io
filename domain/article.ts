@@ -1,11 +1,10 @@
-const ArticleCategory = {
+export const ArticleCategory = {
   TECH: "tech",
   DESIGN: "design",
   DAILY: "daily",
 };
 
-export type ArticleCategoryType =
-  typeof ArticleCategory[keyof typeof ArticleCategory];
+type ArticleCategoryType = typeof ArticleCategory[keyof typeof ArticleCategory];
 
 export interface Article {
   title: string;
