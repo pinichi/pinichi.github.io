@@ -36,8 +36,12 @@ watch(
     category.value = route.query.category ?? "";
   }
 );
+
 watch(category, () => {
-  router.push({ path: "/", query: { category: category.value } });
+  router.push({
+    path: "/",
+    ...(category.value ? { query: { category: category.value } } : {}),
+  });
 });
 
 const { data: articleList } = await useAsyncData(
