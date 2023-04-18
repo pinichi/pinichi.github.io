@@ -14,6 +14,14 @@ export default defineNuxtConfig({
       ],
     },
   },
+  content: {
+    highlight: {
+      theme: {
+        default: "github-dark",
+      },
+    },
+  },
+
   typescript: { strict: true },
   modules: ["@nuxt/content", "@nuxtjs/tailwindcss"],
 });
