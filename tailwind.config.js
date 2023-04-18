@@ -10,6 +10,18 @@ module.exports = {
   ],
   theme: {
     extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            h2: {
+              "scroll-margin-top": "56px",
+            },
+            h3: {
+              "scroll-margin-top": "56px",
+            },
+          },
+        },
+      },
       fontFamily: {
         sans: ["Pretendard", defaultTheme.fontFamily.sans],
       },

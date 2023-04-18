@@ -30,13 +30,13 @@ const isCategoryQuery = computed(
     Object.keys(route.query).includes("category")
 );
 const category = ref(route.query.category ? route.query.category : "");
+
 watch(
   () => route.query,
   () => {
     category.value = route.query.category ?? "";
   }
 );
-
 watch(category, () => {
   router.push({
     path: "/",
