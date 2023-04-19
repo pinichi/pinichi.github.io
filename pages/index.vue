@@ -56,7 +56,7 @@ const FETCH_NUM = 12;
 const { data } = await useLazyAsyncData(
   async () => {
     try {
-      const articeList = await queryContent("/article")
+      const articleList = await queryContent("/article")
         .where({
           _path: { $ne: "/article" },
           isPublished: { $ne: false },
@@ -77,7 +77,7 @@ const { data } = await useLazyAsyncData(
           "slug",
         ])
         .find();
-      return articeList;
+      return articleList;
     } catch (err) {
       console.log("err: ", err);
       router.replace({ path: "/404" });
