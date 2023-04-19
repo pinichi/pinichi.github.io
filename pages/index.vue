@@ -11,6 +11,7 @@
           :category="article.category"
           :image="article.coverImage"
           :slug="article.slug"
+          :createdAt="article.createdAt"
         />
       </template>
     </div>
@@ -56,12 +57,12 @@ const { data: articleList } = await useAsyncData(
         }) // exclude content/article/index.md
         .sort({ createdAt: 1 })
         .only([
-          "title",
-          "image",
-          "_path",
-          "description",
-          "category",
           "coverImage",
+          "createdAt",
+          "category",
+          "title",
+          "description",
+          "_path",
           "slug",
         ])
         .find();
