@@ -6,6 +6,10 @@ export default defineNuxtConfig({
   // @ts-ignore: nuxt3에서  nuxtConfig에 대한 type정의가 안되고 있음.
   app: {
     head: {
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+      ],
       link: [
         {
           rel: "stylesheet",
