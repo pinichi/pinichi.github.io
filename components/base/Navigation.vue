@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full px-4">
+  <div class="w-full px-4 sticky top-20">
     <div class="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
       <Disclosure :defaultOpen="true" v-slot="{ open }">
         <DisclosureButton

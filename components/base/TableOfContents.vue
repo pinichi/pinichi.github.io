@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky top-16 max-w-[240px]">
+  <div class="sticky top-20 max-w-[240px]">
     <li
       v-for="link in props.contents.links"
       class="flex flex-col"

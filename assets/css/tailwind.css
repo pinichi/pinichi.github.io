@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    @apply w-full h-full;
+  }
+  body {
+    @apply w-full h-full;
+  }
+  div#__nuxt {
+    @apply w-full h-full;
+  }
+}
