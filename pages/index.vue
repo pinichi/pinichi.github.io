@@ -1,10 +1,12 @@
 <template>
   <div class="flex flex-col">
     <div class="flex">
-      <div class="hidden w-64 shrink-0 lg:block lg:pr-8">
+      <div class="hidden w-64 shrink-0 lg:block lg:px-8 relative">
         <navigation :category="category" />
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div
+        class="grid grid-cols-[repeat(auto-fill,minmax(max(300px,calc((33%-48px))),1fr))] gap-6"
+      >
         <template v-for="article in articleList" :key="article._path">
           <article-card
             :title="article.title"
@@ -92,27 +94,19 @@ articleList.value = data.value;
 
 const isEndofPage = ref(false);
 
-watch(
-  data,
-  (newData, oldData) => {
-    if (newData.length === 0 && oldData.length > 0) {
-      isEndofPage.value = true;
-    }
-  },
-  { deep: true }
-);
+watch(data, (newData, oldData) => {
+  if (newData.length === 0 && oldData.length > 0) {
+    isEndofPage.valudere = true;
+  }
+});
 
-watch(
-  data,
-  (newData) => {
-    if (!isEndofPage.value && pageNum.value > 1) {
-      articleList.value.push(...newData);
-    } else if (!isEndofPage.value && pageNum.value === 1) {
-      articleList.value = newData;
-    }
-  },
-  { deep: true }
-);
+watch(data, (newData) => {
+  if (!isEndofPage.value && pageNum.value > 1) {
+    articleList.value.push(...newData);
+  } else if (!isEndofPage.value && pageNum.value === 1) {
+    articleList.value = newData;
+  }
+});
 
 const observer = ref(null);
 const indexEl = ref(null);

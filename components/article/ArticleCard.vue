@@ -1,5 +1,8 @@
 <template>
-  <nuxt-link class="w-[350px] cursor-pointer flex flex-col" :to="props.slug">
+  <nuxt-link
+    class="min-w-[300px] cursor-pointer flex flex-col"
+    :to="props.slug"
+  >
     <img :src="props.image" class="rounded-xl" />
     <div class="flex align-items gap-x-2 mt-2">
       <div class="text-sm">{{ createAtDate }}</div>
