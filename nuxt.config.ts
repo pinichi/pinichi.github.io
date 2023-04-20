@@ -27,5 +27,5 @@ export default defineNuxtConfig({
   },
 
   typescript: { strict: true },
-  modules: ["@nuxt/content", "@nuxtjs/tailwindcss"],
+  modules: ["nuxt-icon", "@nuxt/content", "@nuxtjs/tailwindcss"],
 });
