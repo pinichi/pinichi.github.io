@@ -54,10 +54,12 @@ watch(category, () => {
 
 const pageNum = ref(1);
 const FETCH_NUM = 12;
+const isEndOfPage = ref(false);
 
 const { data } = await useLazyAsyncData(
   async () => {
     try {
+      if (isEndOfPage.value) return;
       const articleList = await queryContent("/article")
         .where({
           _path: { $ne: "/article" },
@@ -81,7 +83,6 @@ const { data } = await useLazyAsyncData(
         .find();
       return articleList;
     } catch (err) {
-      console.log("err: ", err);
       router.replace({ path: "/404" });
       throw createError({ statusCode: 404, statusMessage: "404" });
     }
@@ -92,18 +93,18 @@ const { data } = await useLazyAsyncData(
 const articleList = ref([]);
 articleList.value = data.value;
 
-const isEndofPage = ref(false);
-
 watch(data, (newData, oldData) => {
-  if (newData.length === 0 && oldData.length > 0) {
-    isEndofPage.valudere = true;
+  if (newData?.length === 0 && oldData?.length > 0) {
+    isEndOfPage.value = true;
+  } else if (newData?.length > 0 && oldData?.length === 0) {
+    pageNum.value += 1;
   }
 });
 
 watch(data, (newData) => {
-  if (!isEndofPage.value && pageNum.value > 1) {
+  if (!isEndOfPage.value && pageNum.value > 1) {
     articleList.value.push(...newData);
-  } else if (!isEndofPage.value && pageNum.value === 1) {
+  } else if (!isEndOfPage.value && pageNum.value === 1) {
     articleList.value = newData;
   }
 });
@@ -115,13 +116,16 @@ onMounted(() => {
   observer.value = new IntersectionObserver(
     ([entry]) => {
       if (entry?.isIntersecting) {
-        console.log("pageNum call: ", pageNum.value);
-        pageNum.value += 1;
+        if (!isEndOfPage.value && articleList.value?.length > 0) {
+          pageNum.value += 1;
+        }
       }
     },
     { threshold: 0.3 }
   );
-  observer.value.observe(indexEl.value);
+  if (!isEndOfPage.value) {
+    observer.value.observe(indexEl.value);
+  }
 });
 
 onUnmounted(() => {

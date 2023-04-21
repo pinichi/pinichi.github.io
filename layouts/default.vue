@@ -7,4 +7,3 @@
     <CommonFooter />
   </div>
 </template>
-<!--absolute top-0 bottom-0  -->
