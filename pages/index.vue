@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col p-4 sm:p-6 md:p-8">
     <div class="flex">
       <div class="hidden w-64 shrink-0 lg:block lg:px-8 relative">
         <navigation :category="category" />
