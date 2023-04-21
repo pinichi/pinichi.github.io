@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full">
+  <div class="flex w-full p-4 sm:p-6 md:p-8">
     <ContentRenderer class="flex-grow" :value="article" ref="nuxtContent">
       <ContentRendererMarkdown
         :value="article"
@@ -51,15 +51,18 @@ onUnmounted(() => {
 
 const route = useRoute();
 const router = useRouter();
-const { data: article } = await useAsyncData("article", async () => {
+const { data: article, error } = await useAsyncData("article", async () => {
   try {
     const result = await queryContent("/article")
       .where({ _id: `content:article:${route.params.slug}.md` })
       .findOne();
     return result;
   } catch (error) {
-    router.replace({ path: "/404" });
-    // throw createError({ statusCode: 404, statusMessage: "404" });
+    showError({ message: "Page not found", statusCode: 404 });
   }
 });
+
+if (error.value) {
+  throw createError({ statusCode: 404, statusMessage: "Page Not Found" });
+}
 </script>
