@@ -17,6 +17,7 @@
     </div>
   </header>
 </template>
+
 <script setup>
 import MobileMenu from "../base/MobileMenu.vue";
 </script>
