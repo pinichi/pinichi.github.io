@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center h-full">
+  <div class="flex items-center justify-center grow">
     <div class="flex flex-col items-center">
       <div class="text-9xl">404</div>
       <div class="text-xl">Page Not Found</div>
