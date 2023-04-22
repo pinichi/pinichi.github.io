@@ -1,10 +1,11 @@
 <template>
-  <div class="flex flex-col p-4 sm:p-6 md:p-8">
-    <div class="flex">
+  <div class="flex flex-col p-4 flex-grow sm:p-6 md:p-8">
+    <div class="flex flex-grow">
       <div class="hidden w-64 shrink-0 lg:block lg:px-8 relative">
         <navigation :category="category" />
       </div>
       <div
+        v-if="articleList?.length > 0"
         class="grid grid-cols-[repeat(auto-fill,minmax(max(300px,calc((33%-48px))),1fr))] gap-6"
       >
         <template v-for="article in articleList" :key="article._path">
@@ -18,8 +19,16 @@
           />
         </template>
       </div>
+
+      <div
+        class="flex-grow flex flex-col items-center justify-center"
+        v-else-if="!articleList?.length && isEndOfPage && pageNum === 1"
+      >
+        <div class="sm:text-5xl text-3xl">작성된 포스트가 없습니다.</div>
+        <div class="sm:text-3xl text-xl mt-6">포스트를 한번 작성해 볼까요?</div>
+      </div>
     </div>
-    <div ref="indexEl" class="w-full h-1" />
+    <div ref="bottomEl" class="w-full h-1" />
   </div>
 </template>
 
@@ -41,7 +50,8 @@ watch(
   () => route.query,
   () => {
     pageNum.value = 1;
-    isEndofPage.value = false;
+    articleList.value = [];
+    isEndOfPage.value = false;
     category.value = route.query.category ?? "";
   }
 );
@@ -98,6 +108,8 @@ watch(data, (newData, oldData) => {
     isEndOfPage.value = true;
   } else if (newData?.length > 0 && oldData?.length === 0) {
     pageNum.value += 1;
+  } else if (newData?.length === 0 && oldData?.length === 0) {
+    isEndOfPage.value = true;
   }
 });
 
@@ -110,7 +122,13 @@ watch(data, (newData) => {
 });
 
 const observer = ref(null);
-const indexEl = ref(null);
+const bottomEl = ref(null);
+
+onMounted(() => {
+  if (articleList.value?.length === 0 && pageNum.value === 1) {
+    isEndOfPage.value = true;
+  }
+});
 
 onMounted(() => {
   observer.value = new IntersectionObserver(
@@ -124,7 +142,7 @@ onMounted(() => {
     { threshold: 0.3 }
   );
   if (!isEndOfPage.value) {
-    observer.value.observe(indexEl.value);
+    observer.value.observe(bottomEl.value);
   }
 });
 
