@@ -1,19 +1,23 @@
 <template>
   <div
-    :class="color"
-    class="flex items-center w-max rounded text-xs text-white px-1 py-0.25"
+    :class="[color, props.textSize]"
+    class="flex items-center w-max rounded text-white px-1 py-0.25"
   >
     {{ props.category }}
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 // import { ArticleCategoryType } from "../../domain/article";
 
-const props = defineProps({
-  category: String,
-});
+const props = withDefaults(
+  defineProps<{ category?: string; textSize?: string }>(),
+  {
+    category: "",
+    textSize: "text-xs",
+  }
+);
 
 const color = computed(() => {
   switch (props.category) {

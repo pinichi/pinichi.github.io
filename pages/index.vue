@@ -4,28 +4,34 @@
       <div class="hidden w-64 shrink-0 lg:block lg:px-8 relative">
         <navigation :category="category" />
       </div>
-      <div
-        v-if="articleList?.length > 0"
-        class="grid grid-cols-[repeat(auto-fill,minmax(max(300px,calc((33%-48px))),1fr))] gap-6"
-      >
-        <template v-for="article in articleList" :key="article._path">
-          <article-card
-            :title="article.title"
-            :description="article.description"
-            :category="article.category"
-            :image="article.coverImage"
-            :slug="article.slug"
-            :createdAt="article.createdAt"
-          />
-        </template>
-      </div>
-
-      <div
-        class="flex-grow flex flex-col items-center justify-center"
-        v-else-if="!articleList?.length && isEndOfPage && pageNum === 1"
-      >
-        <div class="sm:text-5xl text-3xl">작성된 포스트가 없습니다.</div>
-        <div class="sm:text-3xl text-xl mt-6">포스트를 한번 작성해 볼까요?</div>
+      <div class="flex flex-col w-full">
+        <div class="lg:hidden shrink-0 pb-6">
+          <category-chip :category="category" textSize="2xl" />
+        </div>
+        <div
+          v-if="articleList?.length > 0"
+          class="grid grid-cols-[repeat(auto-fill,minmax(max(300px,calc((33%-48px))),1fr))] gap-6"
+        >
+          <template v-for="article in articleList" :key="article._path">
+            <article-card
+              :title="article.title"
+              :description="article.description"
+              :category="article.category"
+              :image="article.coverImage"
+              :slug="article.slug"
+              :createdAt="article.createdAt"
+            />
+          </template>
+        </div>
+        <div
+          class="flex-grow flex flex-col items-center justify-center"
+          v-else-if="!articleList?.length && isEndOfPage && pageNum === 1"
+        >
+          <div class="sm:text-5xl text-3xl">작성된 포스트가 없습니다.</div>
+          <div class="sm:text-3xl text-xl mt-6">
+            포스트를 한번 작성해 볼까요?
+          </div>
+        </div>
       </div>
     </div>
     <div ref="bottomEl" class="w-full h-1" />
@@ -34,6 +40,7 @@
 
 <script setup>
 import ArticleCard from "../components/article/ArticleCard.vue";
+import CategoryChip from "../components/article/CategoryChip.vue";
 import Navigation from "../components/base/Navigation.vue";
 
 const route = useRoute();
