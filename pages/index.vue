@@ -76,7 +76,7 @@ const pageNum = ref(1);
 const FETCH_NUM = 12;
 const isEndOfPage = ref(false);
 
-const { data } = await useLazyAsyncData(
+const { data } = await useAsyncData(
   async () => {
     try {
       if (isEndOfPage.value) return;
@@ -126,8 +126,6 @@ watch(data, (newData, oldData) => {
 });
 
 watch(data, (newData) => {
-  console.log("~~~~~~~~~~~~~~~~~~~~~~");
-  console.log("newData: ", newData);
   if (newData && !isEndOfPage.value && pageNum.value > 1) {
     articleList.value.push(...newData);
   } else if (newData && !isEndOfPage.value && pageNum.value === 1) {
