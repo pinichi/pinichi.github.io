@@ -2,8 +2,8 @@
   <div class="sticky top-20 max-w-[240px]">
     <li
       v-for="link in props.contents.links"
-      class="flex flex-col"
       :key="link.id"
+      class="flex flex-col"
     >
       <nuxt-link
         :class="link.id === activeId ? 'text-lime-800 font-bold' : ''"
@@ -12,7 +12,7 @@
       >
         {{ link.text }}
       </nuxt-link>
-      <ul v-if="link.children.length > 0" class="border-l">
+      <ul v-if="link.children && link.children.length > 0" class="border-l">
         <li v-for="child in link.children" :key="child.id" class="pl-2">
           <nuxt-link
             :class="
@@ -31,9 +31,11 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  contents: Object,
-  activeId: String,
-});
+<script setup lang="ts">
+import type { Toc } from "@nuxt/content/dist/runtime/types";
+
+const props = defineProps<{
+  contents: Toc;
+  activeId: string;
+}>();
 </script>

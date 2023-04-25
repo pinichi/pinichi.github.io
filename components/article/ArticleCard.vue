@@ -15,18 +15,18 @@
   </nuxt-link>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import CategoryChip from "./CategoryChip.vue";
 import { toDateFormat } from "../../utils/date";
 
-const createAtDate = computed(() => toDateFormat(props.createdAt));
+const props = defineProps<{
+  createdAt: string;
+  image: string;
+  title: string;
+  description: string;
+  category: string;
+  slug: string;
+}>();
 
-const props = defineProps({
-  createdAt: String,
-  image: String,
-  title: String,
-  description: String,
-  category: String,
-  slug: String,
-});
+const createAtDate = computed(() => toDateFormat(props.createdAt));
 </script>

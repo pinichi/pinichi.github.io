@@ -34,8 +34,8 @@
                 active ? 'hover:bg-lime-100' : '',
                 'flex w-full items-center p-2 text-sm',
               ]"
-              @mouseup="close"
               :to="{ path: '/', query: { category: 'design' } }"
+              @mouseup="close"
             >
               design
             </nuxt-link>
@@ -71,6 +71,6 @@
   </Menu>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 </script>

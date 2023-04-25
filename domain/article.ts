@@ -4,7 +4,8 @@ export const ArticleCategory = {
   DAILY: "daily",
 };
 
-type ArticleCategoryType = typeof ArticleCategory[keyof typeof ArticleCategory];
+type ArticleCategoryType =
+  (typeof ArticleCategory)[keyof typeof ArticleCategory];
 
 export interface Article {
   title: string;

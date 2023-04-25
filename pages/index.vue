@@ -6,7 +6,7 @@
       </div>
       <div class="flex flex-col w-full">
         <div class="lg:hidden shrink-0 pb-6">
-          <category-chip :category="category" textSize="2xl" />
+          <category-chip :category="category" text-size="2xl" />
         </div>
         <div
           v-if="articleList?.length > 0"
@@ -19,13 +19,13 @@
               :category="article.category"
               :image="article.coverImage"
               :slug="article.slug"
-              :createdAt="article.createdAt"
+              :created-at="article.createdAt"
             />
           </template>
         </div>
         <div
-          class="flex-grow flex flex-col items-center justify-center"
           v-else-if="!articleList?.length && isEndOfPage && pageNum === 1"
+          class="flex-grow flex flex-col items-center justify-center"
         >
           <div class="sm:text-5xl text-3xl">작성된 포스트가 없습니다.</div>
           <div class="sm:text-3xl text-xl mt-6">
@@ -38,7 +38,8 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { ParsedContent } from "@nuxt/content/dist/runtime/types";
 import ArticleCard from "../components/article/ArticleCard.vue";
 import CategoryChip from "../components/article/CategoryChip.vue";
 import Navigation from "../components/base/Navigation.vue";
@@ -51,7 +52,9 @@ const isCategoryQuery = computed(
     !!Object.keys(route.query).length &&
     Object.keys(route.query).includes("category")
 );
-const category = ref(route.query.category ? route.query.category : "");
+const category = ref(
+  route.query.category ? (route.query.category as string) : ""
+);
 
 watch(
   () => route.query,
@@ -59,7 +62,7 @@ watch(
     pageNum.value = 1;
     articleList.value = [];
     isEndOfPage.value = false;
-    category.value = route.query.category ?? "";
+    category.value = (route.query.category as string) ?? "";
   }
 );
 watch(category, () => {
@@ -107,29 +110,33 @@ const { data } = await useLazyAsyncData(
   { watch: [category, pageNum] }
 );
 
-const articleList = ref([]);
-articleList.value = data.value;
+const articleList = ref<Pick<ParsedContent, string>[]>([]);
+articleList.value = data.value ?? [];
 
 watch(data, (newData, oldData) => {
-  if (newData?.length === 0 && oldData?.length > 0) {
-    isEndOfPage.value = true;
-  } else if (newData?.length > 0 && oldData?.length === 0) {
-    pageNum.value += 1;
-  } else if (newData?.length === 0 && oldData?.length === 0) {
-    isEndOfPage.value = true;
+  if (Array.isArray(newData) && Array.isArray(oldData)) {
+    if (newData?.length === 0 && oldData?.length > 0) {
+      isEndOfPage.value = true;
+    } else if (newData?.length > 0 && oldData?.length === 0) {
+      pageNum.value += 1;
+    } else if (newData?.length === 0 && oldData?.length === 0) {
+      isEndOfPage.value = true;
+    }
   }
 });
 
 watch(data, (newData) => {
-  if (!isEndOfPage.value && pageNum.value > 1) {
+  console.log("~~~~~~~~~~~~~~~~~~~~~~");
+  console.log("newData: ", newData);
+  if (newData && !isEndOfPage.value && pageNum.value > 1) {
     articleList.value.push(...newData);
-  } else if (!isEndOfPage.value && pageNum.value === 1) {
+  } else if (newData && !isEndOfPage.value && pageNum.value === 1) {
     articleList.value = newData;
   }
 });
 
-const observer = ref(null);
-const bottomEl = ref(null);
+const observer = ref<IntersectionObserver | null>(null);
+const bottomEl = ref<HTMLElement | null>(null);
 
 onMounted(() => {
   if (articleList.value?.length === 0 && pageNum.value === 1) {
@@ -148,12 +155,12 @@ onMounted(() => {
     },
     { threshold: 0.3 }
   );
-  if (!isEndOfPage.value) {
-    observer.value.observe(bottomEl.value);
+  if (!isEndOfPage.value && bottomEl.value) {
+    observer.value?.observe(bottomEl.value);
   }
 });
 
 onUnmounted(() => {
-  observer.value.disconnect();
+  observer.value?.disconnect();
 });
 </script>

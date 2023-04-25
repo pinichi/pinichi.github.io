@@ -1,6 +1,6 @@
 <template>
-  <div class="flex w-full p-4 sm:p-6 md:p-8">
-    <ContentRenderer class="flex-grow" :value="article" ref="nuxtContent">
+  <div v-if="article" class="flex w-full p-4 sm:p-6 md:p-8">
+    <ContentRenderer ref="nuxtContent" class="flex-grow" :value="article">
       <ContentRendererMarkdown
         :value="article"
         class="article-content prose max-w-none min-w-0"
@@ -9,18 +9,16 @@
     <div class="hidden lg:block flex-shrink-0 relative pl-6">
       <table-of-contents
         :contents="article.body.toc"
-        :activeId="currentActiveToc"
+        :active-id="currentActiveToc"
       />
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import TableOfContents from "~/components/base/TableOfContents.vue";
-
-const nuxtContent = ref(null);
-const currentActiveToc = ref("");
-const observer = ref(null);
-const options = {};
+const nuxtContent = ref<HTMLElement | null>(null);
+const currentActiveToc = ref<string>("");
+const observer = ref<IntersectionObserver | null>(null);
 
 onMounted(() => {
   observer.value = new IntersectionObserver(
@@ -28,7 +26,7 @@ onMounted(() => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute("id");
-          currentActiveToc.value = id;
+          if (id) currentActiveToc.value = id;
         }
       });
     },
@@ -41,16 +39,16 @@ onMounted(() => {
   document
     .querySelectorAll(".article-content h2[id], .article-content h3[id]")
     .forEach((section) => {
-      observer.value.observe(section);
+      observer.value?.observe(section);
     });
 });
 
 onUnmounted(() => {
-  observer.value.disconnect();
+  observer.value?.disconnect();
 });
 
 const route = useRoute();
-const router = useRouter();
+
 const { data: article, error } = await useAsyncData("article", async () => {
   try {
     const result = await queryContent("/article")

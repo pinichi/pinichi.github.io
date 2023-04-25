@@ -18,6 +18,6 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import MobileMenu from "../base/MobileMenu.vue";
 </script>
