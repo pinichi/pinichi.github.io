@@ -5,12 +5,13 @@
     >
       <nuxt-link
         :to="'/'"
-        class="flex items-center flex-grow text-lime-800 text-2xl"
+        class="flex items-center shrink-0 text-lime-800 text-2xl"
       >
         Pinichi's Blog
       </nuxt-link>
+      <div class="flex-grow" />
       <div class="lg:flex hidden items-center gap-x-4">
-        <div>About</div>
+        <nuxt-link :to="'/about'">About</nuxt-link>
         <div>Mode</div>
       </div>
       <mobile-menu class="lg:hidden" />

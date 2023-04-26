@@ -60,6 +60,7 @@
                 active ? 'hover:bg-lime-100' : '',
                 'flex w-full items-center p-2 rounded-b-md',
               ]"
+              :to="{ path: '/about' }"
               @mouseup="close"
             >
               About
