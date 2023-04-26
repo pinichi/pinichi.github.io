@@ -115,12 +115,10 @@ articleList.value = data.value ?? [];
 
 watch(data, (newData, oldData) => {
   if (Array.isArray(newData) && Array.isArray(oldData)) {
-    if (newData?.length === 0 && oldData?.length > 0) {
+    if (newData.length === 0) {
       isEndOfPage.value = true;
-    } else if (newData?.length > 0 && oldData?.length === 0) {
+    } else if (newData.length > 0 && oldData.length === 0) {
       pageNum.value += 1;
-    } else if (newData?.length === 0 && oldData?.length === 0) {
-      isEndOfPage.value = true;
     }
   }
 });
