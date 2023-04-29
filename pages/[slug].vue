@@ -63,4 +63,18 @@ const { data: article, error } = await useAsyncData("article", async () => {
 if (error.value) {
   throw createError({ statusCode: 404, statusMessage: "Page Not Found" });
 }
+
+useHead({
+  titleTemplate: article.value?.title
+    ? `Pinichi | ${article.value?.title}`
+    : "Pinichi | Article",
+});
+
+//TODO: ogImage default값은 article.value.coverImage null일 경우 default ogImage
+useSeoMeta({
+  title: article.value?.title ?? "Pinichi | Article",
+  ogTitle: article.value?.title ?? "Pinichi | Article",
+  description: article.value?.description ?? "Pinichi의 블로그입니다.",
+  ogDescription: article.value?.description ?? "Pinichi의 블로그입니다.",
+});
 </script>

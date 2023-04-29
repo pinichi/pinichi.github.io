@@ -159,4 +159,12 @@ onMounted(() => {
 onUnmounted(() => {
   observer.value?.disconnect();
 });
+
+useHead({
+  titleTemplate: computed(() => {
+    return isCategoryQuery.value
+      ? `Pinichi | ${category.value}`
+      : "Pinichi | Blog";
+  }),
+});
 </script>

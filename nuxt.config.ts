@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   // @ts-ignore: nuxt3에서  nuxtConfig에 대한 type정의가 안되고 있음.
   app: {
     head: {
+      htmlAttrs: { lang: "ko" },
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -14,6 +15,11 @@ export default defineNuxtConfig({
         {
           rel: "stylesheet",
           href: "https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css",
+        },
+        {
+          rel: "icon",
+          href: "./favicon.ico",
+          sizes: "any",
         },
       ],
     },
@@ -25,7 +31,6 @@ export default defineNuxtConfig({
       },
     },
   },
-
   typescript: { strict: true },
   modules: ["nuxt-icon", "@nuxt/content", "@nuxtjs/tailwindcss"],
 });
