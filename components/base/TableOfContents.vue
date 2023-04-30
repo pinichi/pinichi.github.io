@@ -6,6 +6,7 @@
       class="flex flex-col"
     >
       <nuxt-link
+        prefetch
         :class="link.id === activeId ? 'text-lime-800 font-bold' : ''"
         :to="`#${link.id}`"
         class="break-words text-lg"

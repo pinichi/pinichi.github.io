@@ -16,9 +16,12 @@
               props.category === name ? 'text-green-500' : 'text-gray-500'
             "
           >
-            <nuxt-link :key="name" :to="{ query: { category: `${name}` } }">{{
-              name
-            }}</nuxt-link>
+            <nuxt-link
+              :key="name"
+              prefetch
+              :to="{ query: { category: `${name}` } }"
+              >{{ name }}</nuxt-link
+            >
           </DisclosurePanel>
         </template>
       </Disclosure>

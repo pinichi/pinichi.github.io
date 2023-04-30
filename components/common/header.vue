@@ -4,6 +4,7 @@
       class="flex items-center max-w-[1440px] mx-auto h-14 px-4 sm:px-6 md:px-8 py-1"
     >
       <nuxt-link
+        prefetch
         :to="'/'"
         class="flex items-center shrink-0 text-lime-800 text-2xl"
       >
@@ -11,7 +12,7 @@
       </nuxt-link>
       <div class="flex-grow" />
       <div class="lg:flex hidden items-center gap-x-4">
-        <nuxt-link :to="'/about'">About</nuxt-link>
+        <nuxt-link prefetch :to="'/about'">About</nuxt-link>
         <div>Mode</div>
       </div>
       <mobile-menu class="lg:hidden" />

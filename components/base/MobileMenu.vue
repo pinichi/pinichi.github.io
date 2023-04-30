@@ -18,6 +18,7 @@
           <div class="text-left font-medium p-2">카테고리</div>
           <MenuItem v-slot="{ active, close }">
             <nuxt-link
+              prefetch
               :class="[
                 active ? 'bg-lime-100' : '',
                 'flex w-full items-center p-2 text-sm',
@@ -30,6 +31,7 @@
           </MenuItem>
           <MenuItem v-slot="{ active, close }">
             <nuxt-link
+              prefetch
               :class="[
                 active ? 'hover:bg-lime-100' : '',
                 'flex w-full items-center p-2 text-sm',
@@ -42,6 +44,7 @@
           </MenuItem>
           <MenuItem v-slot="{ active, close }">
             <nuxt-link
+              prefetch
               :class="[
                 active ? 'hover:bg-lime-100' : '',
                 'flex w-full items-center p-2 text-sm',
@@ -56,6 +59,7 @@
         <div class="pt-1">
           <MenuItem v-slot="{ active, close }">
             <nuxt-link
+              prefetch
               :class="[
                 active ? 'hover:bg-lime-100' : '',
                 'flex w-full items-center p-2 rounded-b-md',
