@@ -9,7 +9,7 @@
           <category-chip :category="category" text-size="2xl" />
         </div>
         <div
-          v-if="articleList?.length > 0"
+          v-if="articleList && articleList.length > 0"
           class="grid grid-cols-[repeat(auto-fill,minmax(max(300px,calc((33%-48px))),1fr))] gap-6"
         >
           <template v-for="article in articleList" :key="article._path">
@@ -24,7 +24,7 @@
           </template>
         </div>
         <div
-          v-else-if="!articleList?.length && isEndOfPage && pageNum === 1"
+          v-else-if="!articleList?.length"
           class="flex-grow flex flex-col items-center justify-center"
         >
           <div class="sm:text-5xl text-3xl">작성된 포스트가 없습니다.</div>
@@ -39,7 +39,6 @@
 </template>
 
 <script setup lang="ts">
-import { ParsedContent } from "@nuxt/content/dist/runtime/types";
 import ArticleCard from "../components/article/ArticleCard.vue";
 import CategoryChip from "../components/article/CategoryChip.vue";
 import Navigation from "../components/base/Navigation.vue";
@@ -59,9 +58,6 @@ const category = ref(
 watch(
   () => route.query,
   () => {
-    pageNum.value = 1;
-    articleList.value = [];
-    isEndOfPage.value = false;
     category.value = (route.query.category as string) ?? "";
   }
 );
@@ -72,15 +68,10 @@ watch(category, () => {
   });
 });
 
-const pageNum = ref(1);
-const FETCH_NUM = 12;
-const isEndOfPage = ref(false);
-
-const { data } = await useAsyncData(
+const { data: articleList } = await useAsyncData(
   async () => {
     try {
-      if (isEndOfPage.value) return;
-      const articleList = await queryContent("/article")
+      const articles = await queryContent("/article")
         .where({
           _path: { $ne: "/article" },
           isPublished: { $ne: false },
@@ -88,8 +79,6 @@ const { data } = await useAsyncData(
             ? { category: { $eq: category.value } }
             : {}),
         })
-        .skip(FETCH_NUM * (pageNum.value - 1))
-        .limit(FETCH_NUM)
         .sort({ createdAt: 1 })
         .only([
           "coverImage",
@@ -101,64 +90,14 @@ const { data } = await useAsyncData(
           "slug",
         ])
         .find();
-      return articleList;
+      return articles;
     } catch (err) {
       router.replace({ path: "/404" });
       throw createError({ statusCode: 404, statusMessage: "404" });
     }
   },
-  { watch: [category, pageNum] }
+  { watch: [category] }
 );
-
-const articleList = ref<Pick<ParsedContent, string>[]>([]);
-articleList.value = data.value ?? [];
-
-watch(data, (newData, oldData) => {
-  if (Array.isArray(newData) && Array.isArray(oldData)) {
-    if (newData.length === 0) {
-      isEndOfPage.value = true;
-    } else if (newData.length > 0 && oldData.length === 0) {
-      pageNum.value += 1;
-    }
-  }
-});
-
-watch(data, (newData) => {
-  if (newData && !isEndOfPage.value && pageNum.value > 1) {
-    articleList.value.push(...newData);
-  } else if (newData && !isEndOfPage.value && pageNum.value === 1) {
-    articleList.value = newData;
-  }
-});
-
-const observer = ref<IntersectionObserver | null>(null);
-const bottomEl = ref<HTMLElement | null>(null);
-
-onMounted(() => {
-  if (articleList.value?.length === 0 && pageNum.value === 1) {
-    isEndOfPage.value = true;
-  }
-});
-
-onMounted(() => {
-  observer.value = new IntersectionObserver(
-    ([entry]) => {
-      if (entry?.isIntersecting) {
-        if (!isEndOfPage.value && articleList.value?.length > 0) {
-          pageNum.value += 1;
-        }
-      }
-    },
-    { threshold: 0.3 }
-  );
-  if (!isEndOfPage.value && bottomEl.value) {
-    observer.value?.observe(bottomEl.value);
-  }
-});
-
-onUnmounted(() => {
-  observer.value?.disconnect();
-});
 
 useHead({
   titleTemplate: computed(() => {
