@@ -70,10 +70,12 @@ useHead({
     : "Pinichi | Article",
 });
 
-//TODO: ogImage default값은 article.value.coverImage null일 경우 default ogImage
 useSeoMeta({
   title: article.value?.title ?? "Pinichi | Article",
   ogTitle: article.value?.title ?? "Pinichi | Article",
+  ogImage:
+    article.value?.coverImage ??
+    "https://user-images.githubusercontent.com/19923534/235397317-bcc0948b-4609-4bde-9fb8-82df94aacc8c.jpg",
   description: article.value?.description ?? "Pinichi의 블로그입니다.",
   ogDescription: article.value?.description ?? "Pinichi의 블로그입니다.",
 });
