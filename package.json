@@ -9,7 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint --ext .js,.ts .",
-    "deploy": "nuxt generate && touch .output/public/.nojekyll && node ./server/index.mjs && gh-pages --dotfiles -d .output/public --repo git@github.com:pinichi/blog.git"
+    "deploy": "nuxt generate && touch .output/public/.nojekyll && gh-pages --dotfiles -d .output/public --repo git@github.com:pinichi/blog.git"
   },
   "devDependencies": {
     "@headlessui/vue": "^1.7.17",
